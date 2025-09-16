@@ -5,7 +5,7 @@ import ScoreCard from './shared/ScoreCard';
 import PriceCard from './shared/PriceCard';
 import AntimicrobialLog from './shared/AntimicrobialLog';
 import PrescriptionList from './shared/PrescriptionList';
-import FloatingAIAssistant from './FloatingAIAssistant';
+import FloatingButtons from './FloatingButtons'
 
 const FarmerDashboard = ({ data }) => {
   const { farmer, prices } = data;
@@ -43,8 +43,7 @@ const FarmerDashboard = ({ data }) => {
         </div>
         
       </div>
-
-      <FloatingAIAssistant />
+      <FloatingButtons/>
     </div>
   );
 };

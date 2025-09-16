@@ -2,16 +2,60 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Reset some defaults */
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark mode support */
+body.dark {
+  background-color: #111827; /* Tailwind gray-900 */
+  color: #f9fafb;           /* Tailwind gray-50 */
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: #111827; /* dark text for code on light mode */
+}
+
+body.dark code {
+  background-color: #1f2937; /* Tailwind gray-800 */
+  color: #f9fafb;
+}
+
+/* Default headings styling */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+
+/* Paragraphs default spacing */
+p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+/* Links */
+a {
+  color: #3b82f6; /* Tailwind blue-500 */
+  text-decoration: underline;
+}
+
+body.dark a {
+  color: #60a5fa; /* Tailwind blue-400 */
+}
+
+/* Smooth transitions for interactive elements */
+* {
+  transition: all 0.2s ease-in-out;
 }

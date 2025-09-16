@@ -16,19 +16,21 @@ const BuyerDashboard = ({ data }) => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
       <Header 
         title="Farm Directory"
         subtitle="Quality-sorted livestock suppliers"
         bgColor="bg-purple-600"
       />
 
-      <div className="p-4">
-        <div className="bg-white rounded-lg p-4 mb-6 shadow-sm">
-          <h3 className="font-semibold mb-3">Filter Farms</h3>
-          <div className="grid grid-cols-2 gap-4">
+      <div className="p-6 max-w-7xl mx-auto space-y-6">
+        {/* Filter Section */}
+        <div className="bg-white rounded-xl shadow-md p-6">
+          <h3 className="text-lg font-semibold mb-4 text-gray-800">Filter Farms</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <select 
-              className="border rounded-lg p-2"
+              className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
               value={selectedRegion}
               onChange={(e) => setSelectedRegion(e.target.value)}
             >
@@ -39,7 +41,7 @@ const BuyerDashboard = ({ data }) => {
               <option value="Mangalore">Mangalore</option>
             </select>
             <select 
-              className="border rounded-lg p-2"
+              className="border border-gray-300 rounded-lg p-3 focus:ring-2 focus:ring-purple-500 focus:outline-none transition"
               value={selectedType}
               onChange={(e) => setSelectedType(e.target.value)}
             >
@@ -52,14 +54,21 @@ const BuyerDashboard = ({ data }) => {
           </div>
         </div>
 
+        {/* Farms List */}
         <div className="space-y-4">
-          {filteredFarms.map((farm, index) => (
-            <FarmCard 
-              key={index}
-              farm={farm}
-              onContact={handleContactFarm}
-            />
-          ))}
+          {filteredFarms.length > 0 ? (
+            filteredFarms.map((farm, index) => (
+              <FarmCard 
+                key={index}
+                farm={farm}
+                onContact={handleContactFarm}
+              />
+            ))
+          ) : (
+            <div className="bg-white rounded-xl shadow-md p-6 text-center text-gray-500">
+              No farms found for the selected filters.
+            </div>
+          )}
         </div>
       </div>
     </div>
