@@ -1,8 +1,54 @@
-import React from 'react';
-import { Shield, FileText, CheckCircle, AlertCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Shield, FileText, CheckCircle, AlertCircle, X } from 'lucide-react';
 import Header from './shared/Header';
 
 const VetDashboard = ({ data }) => {
+  const [showTreatmentForm, setShowTreatmentForm] = useState(false);
+  const [showPrescriptionForm, setShowPrescriptionForm] = useState(false);
+
+  const [treatmentData, setTreatmentData] = useState({
+    farmName: '',
+    FarmID: '',
+    region: '',
+    humidity: '',
+    rainfall: '',
+    antimicrobial: ''
+  });
+
+  const [prescriptionData, setPrescriptionData] = useState({
+    farmName: '',
+    farmID:'',
+    uploadedImages: [],
+    prescription: ''
+  });
+
+  const handleTreatmentChange = (e) => {
+    setTreatmentData({ ...treatmentData, [e.target.name]: e.target.value });
+  };
+
+  const handlePrescriptionChange = (e) => {
+    setPrescriptionData({ ...prescriptionData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageUpload = (e) => {
+    setPrescriptionData({
+      ...prescriptionData,
+      uploadedImages: Array.from(e.target.files)
+    });
+  };
+
+  const submitTreatment = () => {
+    console.log('Treatment submitted:', treatmentData);
+    setShowTreatmentForm(false);
+    setTreatmentData({ farmName: '', region: '', humidity: '', rainfall: '', antimicrobial: '' });
+  };
+
+  const submitPrescription = () => {
+    console.log('Prescription submitted:', prescriptionData);
+    setShowPrescriptionForm(false);
+    setPrescriptionData({ farmName: '', uploadedImages: [], prescription: '' });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Header */}
@@ -15,11 +61,17 @@ const VetDashboard = ({ data }) => {
       <div className="p-6 space-y-8 max-w-7xl mx-auto">
         {/* Quick Actions */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <button className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300">
+          <button
+            onClick={() => setShowTreatmentForm(true)}
+            className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
+          >
             <Shield className="text-green-600 mb-3" size={36} />
             <span className="font-semibold text-gray-700 hover:text-green-700 transition-colors">Log Treatment</span>
           </button>
-          <button className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300">
+          <button
+            onClick={() => setShowPrescriptionForm(true)}
+            className="bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center hover:shadow-lg transition-shadow duration-300"
+          >
             <FileText className="text-blue-600 mb-3" size={36} />
             <span className="font-semibold text-gray-700 hover:text-blue-700 transition-colors">Write Prescription</span>
           </button>
@@ -67,6 +119,116 @@ const VetDashboard = ({ data }) => {
           </div>
         </div>
       </div>
+
+      {/* Treatment Modal */}
+      {showTreatmentForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-full max-w-lg p-6 relative">
+            <button
+              onClick={() => setShowTreatmentForm(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              <X size={24} />
+            </button>
+            <h2 className="text-xl font-bold mb-4">Log Antimicrobial Treatment</h2>
+            <input
+              type="text"
+              placeholder="Farm Name"
+              name="farmName"
+              value={treatmentData.farmName}
+              onChange={handleTreatmentChange}
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <input
+              type="number"
+              placeholder='Farm ID'
+              value={treatmentData.FarmID}
+              onChange={handleTreatmentChange}
+              className="w-full mb-2 p-2 border rounded"
+              />
+            <input
+              type="text"
+              placeholder="Region"
+              name="region"
+              value={treatmentData.region}
+              onChange={handleTreatmentChange}
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="Humidity (%)"
+              name="humidity"
+              value={treatmentData.humidity}
+              onChange={handleTreatmentChange}
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <input
+              type="text"
+              placeholder="Rainfall (mm)"
+              name="rainfall"
+              value={treatmentData.rainfall}
+              onChange={handleTreatmentChange}
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <textarea
+              placeholder="Antimicrobial Details"
+              name="antimicrobial"
+              value={treatmentData.antimicrobial}
+              onChange={handleTreatmentChange}
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <button
+              onClick={submitTreatment}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 mt-2"
+            >
+              Submit Treatment
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Prescription Modal */}
+      {showPrescriptionForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg w-full max-w-lg p-6 relative">
+            <button
+              onClick={() => setShowPrescriptionForm(false)}
+              className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+            >
+              <X size={24} />
+            </button>
+            <h2 className="text-xl font-bold mb-4">Write Prescription</h2>
+            <input
+              type="text"
+              placeholder="Farm Name"
+              name="farmName"
+              value={prescriptionData.farmName}
+              onChange={handlePrescriptionChange}
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <input
+              type="file"
+              multiple
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="w-full mb-2"
+            />
+            <textarea
+              placeholder="Prescription Details"
+              name="prescription"
+              value={prescriptionData.prescription}
+              onChange={handlePrescriptionChange}
+              className="w-full mb-2 p-2 border rounded"
+            />
+            <button
+              onClick={submitPrescription}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 mt-2"
+            >
+              Submit Prescription
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Header from './shared/Header';
 import FarmCard from './shared/FarmCard';
+import CommunityFeed from './CommunityFeed'
+import FloatingButtonsBuyer from './FloatingButtonsBuyer';
 
 const BuyerDashboard = ({ data }) => {
   const [selectedRegion, setSelectedRegion] = useState('');
@@ -71,6 +73,7 @@ const BuyerDashboard = ({ data }) => {
           )}
         </div>
       </div>
+      <FloatingButtonsBuyer/>
     </div>
   );
 };

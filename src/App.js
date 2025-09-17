@@ -4,9 +4,14 @@ import FarmerDashboard from "./components/FarmerDashboard";
 import BuyerDashboard from "./components/BuyerDashboard";
 import VetDashboard from "./components/VetDashboard";
 import { mockData } from "./data/mockData";
-
+import FloatingButton from "./components/FloatingButtonsBuyer";
+import CommunityFeed from "./components/CommunityFeed";
+import Messages from "./components/Messages";
 const App = () => {
   const [currentUser, setCurrentUser] = useState(null);
+  const [showCommunity, setShowCommunity] = useState(false); // ✅ added
+  <CommunityFeed currentUser={currentUser} />
+
 
   const handleLogin = (userType) => {
     setCurrentUser(userType);
@@ -14,6 +19,7 @@ const App = () => {
 
   const handleLogout = () => {
     setCurrentUser(null);
+    setShowCommunity(false); // reset on logout
   };
 
   if (!currentUser) {
@@ -35,10 +41,30 @@ const App = () => {
       </header>
 
       <main className="p-6">
-        {currentUser === "farmer" && <FarmerDashboard data={mockData} />}
-        {currentUser === "buyer" && <BuyerDashboard data={mockData} />}
-        {currentUser === "vet" && <VetDashboard data={mockData} />}
+        {showCommunity ? (
+  <div className="flex gap-6">
+    {/* Left: Community feed */}
+    <div className="flex-1">
+      <CommunityFeed />
+    </div>
+
+    {/* Right: Messages sidebar */}
+    <div className="w-80">
+      <Messages />
+    </div>
+  </div>
+) : (
+  <>
+    {currentUser === "farmer" && <FarmerDashboard data={mockData} />}
+    {currentUser === "buyer" && <BuyerDashboard data={mockData} />}
+    {currentUser === "vet" && <VetDashboard data={mockData} />}
+  </>
+)}
       </main>
+
+      {!showCommunity && (
+        <FloatingButton onOpenCommunity={() => setShowCommunity(true)} />
+      )}
     </div>
   );
 };
